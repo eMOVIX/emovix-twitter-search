@@ -31,4 +31,4 @@ Edit the config.json file to add your own Twitter API credentials and the MongoD
 
 Run the program:
 
-    python emovix-twitter-search
+    python emovix_twitter_search.py
