@@ -52,8 +52,10 @@ if __name__ == '__main__':
             logging.debug('No users to update.')
             continue
 
-        # If the last update was less than 1 day ago, it won't be updated again
-        days_since_update = (datetime.datetime.now() - twitter_user['last_updated']).days
+        days_since_update = 3
+        if "last_updated" in twitter_user:
+            # If the last update was less than 1 day ago, it won't be updated again
+            days_since_update = (datetime.datetime.now() - twitter_user['last_updated']).days
 
         if days_since_update < 1:
             logging.debug('All users already up to date.')
