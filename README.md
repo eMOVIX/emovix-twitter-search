@@ -25,6 +25,10 @@ Install the requirements:
 
     pip install -r requirements.txt
 
+To exit the virtualenv:
+
+    deactivate
+
 Edit the config.json file to add your own Twitter API credentials and the MongoDB database name:
 
     vim config.json
@@ -32,3 +36,22 @@ Edit the config.json file to add your own Twitter API credentials and the MongoD
 Run the program:
 
     python emovix_twitter_search.py
+
+Add to supervisor:
+
+    sudo vim /etc/supervisord.d/emovix_twitter_search.conf
+
+Add this to the file:
+
+```
+[program:emovix_twitter_search]
+directory=/opt/emovix/emovix-twitter-search
+command=/opt/emovix/emovix-twitter-search/venv/bin/python emovix_twitter_search.py
+autostart=true
+autorestart=unexpected
+redirect_stderr=True
+```
+
+    sudo supervisorctl
+    supervisor> reread
+    supervisor> add emovix_twitter_search
