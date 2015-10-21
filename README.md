@@ -25,6 +25,10 @@ Install the requirements:
 
     pip install -r requirements.txt
 
+To exit the virtualenv:
+
+    deactivate
+
 Edit the config.json file to add your own Twitter API credentials and the MongoDB database name:
 
     vim config.json
