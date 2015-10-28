@@ -78,6 +78,7 @@ if __name__ == '__main__':
                           'location': user.location,
                           'name': user.name,
                           'statuses_count': user.statuses_count,
+                          'date_created': datetime.datetime.now(),
                           'url': user.url}
 
             # Insert the Twitter user snapshot into the database
