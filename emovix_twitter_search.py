@@ -8,7 +8,7 @@ import logging
 import time
 import datetime
 
-logging.basicConfig(filename='emovix_twitter_search.log',level=logging.WARNING)
+logging.basicConfig(filename='emovix_twitter_search.log',level=logging.INFO)
 
 # Configuration parameters
 access_token = ""
@@ -21,7 +21,7 @@ client = None
 db = None
 
 if __name__ == '__main__':
-    logging.debug('emovix_twitter_search.py starting ...')
+    logging.info('emovix_twitter_search.py starting ...')
 
     # Load configuration
     with open('config.json', 'r') as f:
@@ -37,7 +37,7 @@ if __name__ == '__main__':
 
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
-    api = tweepy.API(auth)
+    api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 
     while True:
         # Queries to the Twitter Search API are limited to 1 every 5 seconds, approximately
@@ -64,7 +64,7 @@ if __name__ == '__main__':
         try:
             # Fetch user information from the Twitter Public API
             user = api.get_user(twitter_user['screen_name'])
-            logging.debug('Fetching information from Twitter user @' + user.screen_name + ' ...')
+            logging.info('Fetching information from Twitter user @' + user.screen_name + ' ...')
 
             # JSON object with the parameters that will be saved to the database
             user_json = { 'id': user.id,
@@ -83,7 +83,8 @@ if __name__ == '__main__':
 
             # Insert the Twitter user snapshot into the database
             db.twitterUserSnapshot.insert_one(user_json)
-            logging.debug('New user snapshot inserted.')
+            logging.info('New user snapshot inserted.')
+            logging.info(user_json)
 
             # Update the last updated information for this user
             db.twitterUserMonitor.update_one({ '_id': twitter_user['_id']}, { '$set': { 'last_updated': datetime.datetime.now() } })
